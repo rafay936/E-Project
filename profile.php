@@ -21,6 +21,21 @@
             height: 100vh;
             margin: 0;
             background-color: #f4f4f9;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
 
         .profile-container {
@@ -30,6 +45,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 300px;
+            margin-top: 100px; /* To avoid overlap with the header */
         }
 
         .profile-picture {
@@ -75,18 +91,29 @@
 </head>
 <body>
 
+    <div class="header">
+        <h1>Profile Page</h1>
+    </div>
+
     <div class="profile-container">
+        <img src="download.png" alt="Profile Picture">
         
-        <h2>Username</h2>
+        <h2>Profile</h2>
         
         <form>
-            <label for="address">Address:</label><br>
-            <input type="text" id="address" name="address" placeholder="Enter address"><br><br>
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" placeholder="Enter username"><br><br>
 
-            <label for="age">Age:</label><br>
-            <input type="number" id="age" name="age" placeholder="Enter age"><br><br>
+            <label for="email">Email:</label><br>
+            <input type="text" id="email" name="email" placeholder="Enter email"><br><br>
 
-            <button type="button" class="update-button">Update</button>
+            <label for="address">Phone number:</label><br>
+            <input type="text" id="phone number" name="phone number" placeholder="Enter phone number"><br><br>
+
+            <label for="password">Password:</label><br>
+            <input type="text" id="password" name="password" placeholder="Enter password"><br><br>
+
+            <button type="button" class="update-button">Log Out</button>
         </form>
     </div>
 
