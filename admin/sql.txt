@@ -1,0 +1,301 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+CREATE TABLE beds (
+  bed_id int(11) NOT NULL,
+  bed_type enum('ICU','General','Private','Emergency') NOT NULL,
+  bed_count int(11) DEFAULT 0,
+  hospital_id int(11) DEFAULT NULL,
+  created_at timestamp NOT NULL DEFAULT current_timestamp(),
+  updated_at timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO beds (bed_id, bed_type, bed_count, hospital_id, created_at, updated_at) VALUES
+(2, 'ICU', 15, 8, '2025-02-20 09:17:46', '2025-02-20 09:17:46'),
+(3, 'General', 100, 8, '2025-02-20 09:17:46', '2025-02-20 09:17:46'),
+(4, 'Private', 30, 8, '2025-02-20 09:17:46', '2025-02-20 09:17:46'),
+(5, 'Emergency', 20, 8, '2025-02-20 09:17:46', '2025-02-20 09:17:46'),
+(6, 'ICU', 10, 11, '2025-02-20 09:17:46', '2025-02-20 09:17:46'),
+(7, 'General', 80, 11, '2025-02-20 09:17:46', '2025-02-20 09:17:46'),
+(8, 'Private', 20, 11, '2025-02-20 09:17:46', '2025-02-20 09:17:46'),
+(9, 'Emergency', 15, 11, '2025-02-20 09:17:46', '2025-02-20 09:17:46'),
+(11, 'General', 80, 12, '2025-02-20 09:48:44', '2025-02-20 23:06:30'),
+(13, 'ICU', 8, 12, '2025-02-20 10:51:13', '2025-02-20 23:06:30');
+
+CREATE TABLE hospitals (
+  hospital_id int(11) NOT NULL,
+  hospital_name varchar(255) NOT NULL,
+  address text DEFAULT NULL,
+  contact_number varchar(15) DEFAULT NULL,
+  email varchar(255) DEFAULT NULL,
+  user_id int(11) DEFAULT NULL,
+  status enum('active','inactive') DEFAULT 'active',
+  created_at timestamp NOT NULL DEFAULT current_timestamp(),
+  updated_at timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  city varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO hospitals (hospital_id, hospital_name, address, contact_number, email, user_id, status, created_at, updated_at, city) VALUES
+(5, 'DOW', NULL, NULL, NULL, 2, 'active', '2025-02-20 23:40:45', '2025-02-20 23:40:45', NULL),
+(8, 'City Hospital', '123 Main Street', '123-456-7890', 'cityhospital@example.com', NULL, 'active', '2025-02-10 02:02:44', '2025-02-10 02:02:44', NULL),
+(11, 'City Hospital', '123 Main Street', '123-456-7890', 'cityhospital@gmail.com', 4, 'active', '2025-02-10 02:06:24', '2025-02-10 02:06:24', NULL),
+(12, 'Dow Hospital', '456 Hospital Road', '123-456-7890', 'dowhospital@example.com', 5, 'active', '2025-02-20 09:38:37', '2025-02-20 09:38:37', NULL);
+
+CREATE TABLE invoices (
+  id int(11) NOT NULL,
+  invoice_number varchar(50) NOT NULL,
+  patient_id varchar(50) NOT NULL,
+  patient_name varchar(255) NOT NULL,
+  total_amount decimal(10,2) NOT NULL,
+  created_at timestamp NOT NULL DEFAULT current_timestamp(),
+  status enum('Paid','Unpaid') NOT NULL DEFAULT 'Unpaid'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO invoices (id, invoice_number, patient_id, patient_name, total_amount, created_at, status) VALUES
+(1, 'INV-2024-001', '2', 'Mahdiraza', 299.99, '2025-02-20 09:17:46', 'Paid'),
+(2, 'INV-2024-002', '2', 'Mahdiraza', 450.00, '2025-02-20 09:17:46', 'Unpaid'),
+(3, 'INV-2024-003', '2', 'Mahdiraza', 199.50, '2025-02-20 09:17:46', 'Paid');
+
+CREATE TABLE notifications (
+  notification_id int(11) NOT NULL,
+  user_id int(11) DEFAULT NULL,
+  hospital_id int(11) DEFAULT NULL,
+  message text NOT NULL,
+  status enum('unread','read') DEFAULT 'unread',
+  created_at timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO notifications (notification_id, user_id, hospital_id, message, status, created_at) VALUES
+(1, 2, NULL, 'Your bed request has been approved', 'read', '2025-02-20 09:17:46'),
+(2, 4, NULL, 'New vaccine shipment received', 'unread', '2025-02-20 09:17:46'),
+(3, 5, NULL, 'Scheduled maintenance tonight', 'read', '2025-02-20 09:17:46'),
+(4, 2, NULL, 'Payment reminder: Invoice INV-2024-002 is pending', 'unread', '2025-02-20 09:17:46'),
+(5, 2, NULL, 'New appointment request (ID: 5) pending approval.', 'unread', '2025-02-20 23:39:49');
+
+CREATE TABLE reports (
+  report_id int(11) NOT NULL,
+  report_name varchar(255) NOT NULL,
+  report_data text DEFAULT NULL,
+  generated_at timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO reports (report_id, report_name, report_data, generated_at) VALUES
+(1, 'Monthly Bed Utilization', 'ICU utilization: 85%, General: 65%', '2025-02-20 09:17:46'),
+(2, 'Vaccine Inventory Q1', 'COVID-19 stock: 420 doses, Flu: 280 doses', '2025-02-20 09:17:46'),
+(3, 'Financial Summary 2024', 'Total revenue: $152,000, Expenses: $89,500', '2025-02-20 09:17:46');
+
+CREATE TABLE requests (
+  request_id int(11) NOT NULL,
+  user_id int(11) DEFAULT NULL,
+  hospital_id int(11) DEFAULT NULL,
+  vaccine_id int(11) DEFAULT NULL,
+  bed_id int(11) DEFAULT NULL,
+  status enum('pending','approved','rejected') DEFAULT 'pending',
+  request_type enum('vaccine','bed') NOT NULL,
+  requested_at timestamp NOT NULL DEFAULT current_timestamp(),
+  approved_at timestamp NULL DEFAULT NULL,
+  rejected_at timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO requests (request_id, user_id, hospital_id, vaccine_id, bed_id, status, request_type, requested_at, approved_at, rejected_at) VALUES
+(1, 2, 8, NULL, 2, 'approved', 'bed', '2024-03-01 04:00:00', NULL, NULL),
+(2, 5, 11, 4, NULL, 'approved', 'vaccine', '2025-02-20 09:17:46', NULL, NULL),
+(3, 2, 8, NULL, 5, 'rejected', 'bed', '2024-03-05 09:30:00', NULL, NULL),
+(4, 2, 12, 2, NULL, 'pending', 'vaccine', '2025-02-20 23:38:39', NULL, NULL),
+(5, 2, 12, 2, NULL, 'pending', 'vaccine', '2025-02-20 23:39:49', NULL, NULL);
+
+CREATE TABLE testimonials (
+  id int(11) NOT NULL,
+  image_url varchar(255) DEFAULT NULL,
+  testimonial_text text DEFAULT NULL,
+  name varchar(255) DEFAULT NULL,
+  role varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE users (
+  user_id int(11) NOT NULL,
+  username varchar(255) NOT NULL,
+  password varchar(255) NOT NULL,
+  role enum('admin','hospital','patient') NOT NULL,
+  full_name varchar(255) DEFAULT NULL,
+  email varchar(255) DEFAULT NULL,
+  phone varchar(15) DEFAULT NULL,
+  address text DEFAULT NULL,
+  status enum('active','inactive') DEFAULT 'active',
+  created_at timestamp NOT NULL DEFAULT current_timestamp(),
+  updated_at timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  otp varchar(6) DEFAULT NULL,
+  otp_expiry datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO users (user_id, username, password, role, full_name, email, phone, address, status, created_at, updated_at, otp, otp_expiry) VALUES
+(2, 'MAHDI', '$2a$12$K0pmR1vQSCBIslJuCDKKKuAwllZpewk/HeDF8dffOZDgSvGrmlYvW', 'patient', 'Mahdiraza', 'mahdiraza965@gmail.com', '03163278255', 'UNIVERSITY RD', 'active', '2025-02-01 18:52:25', '2025-02-20 21:53:32', NULL, NULL),
+(4, 'admin', '$2y$10$qK.xrc62YhpgJgcpcwUkh.j.fYjAI9dRUKEEs8zQY5jT7eFyYbFIG', 'admin', 'ARA', 'ABDULRAFAY.RR28@GMAIL.COM', '03252980245', '-', 'active', '2025-02-10 00:38:05', '2025-02-10 00:38:05', NULL, NULL),
+(5, 'hospital_user', '$2a$12$0Y52jO1In1FgMnF3oT7M9uAjeaznvaAn5gacOJUy4ZDDaj2IkV4U6', 'hospital', 'DOW ', 'hospital@example.com', '1234567890', 'Hospital Address', 'active', '2025-02-15 21:57:26', '2025-02-15 22:53:46', NULL, NULL),
+(10, 'general_hospital', 'hashed_password', 'hospital', 'General Hospital', 'hospital5@example.com', '123-456-7890', '123 Main St', 'active', '2025-02-19 02:05:03', '2025-02-19 02:05:03', NULL, NULL),
+(14, 'DOW_hospital', 'hashed_password', 'hospital', 'General Hospital', 'DOW@example.com', '123-456-7890', '123 Main St', 'active', '2025-02-19 02:27:10', '2025-02-19 02:27:10', NULL, NULL);
+
+CREATE TABLE vaccination_records (
+  id int(11) NOT NULL,
+  person_name varchar(255) NOT NULL,
+  vaccine varchar(255) NOT NULL,
+  date date NOT NULL,
+  hospital_id int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO vaccination_records (id, person_name, vaccine, date, hospital_id) VALUES
+(4, 'John Doe', 'COVID-19 Vaccine', '2024-12-15', NULL),
+(12, 'Michael Johnson', 'Hepatitis B Vaccine', '2024-12-17', NULL),
+(17, 'Jane Smith', 'Flu Vaccine', '2024-12-16', NULL),
+(22, 'rafay', 'Flu Vaccine', '2022-05-25', NULL),
+(26, 'mahdi raza ', 'Hepatitis B Vaccine', '2059-04-05', NULL),
+(27, 'John Doe', 'COVID-19 Vaccine', '2024-12-15', NULL),
+(28, 'Jane Smith', 'Flu Vaccine', '2024-12-16', NULL),
+(29, 'Michael Johnson', 'Hepatitis B Vaccine', '2024-12-17', NULL),
+(30, 'mahdi raza ', 'Hepatitis B Vaccine', '2059-04-05', NULL),
+(31, 'John Doe', 'COVID-19 Vaccine', '2024-12-15', NULL),
+(32, 'Jane Smith', 'Flu Vaccine', '2024-12-16', NULL),
+(37, 'mahdi raza ', 'Hepatitis B Vaccine', '2059-04-05', NULL),
+(38, 'RAFAY', 'COVID-19 Vaccine', '2025-02-12', NULL),
+(39, 'RAFAY', 'COVID-19 Vaccine', '2025-02-12', NULL),
+(40, 'RAFAY', 'COVID-19 Vaccine', '2025-02-12', NULL),
+(41, 'RAFAY', 'COVID-19 Vaccine', '2025-02-12', NULL),
+(42, 'RAFAY', 'COVID-19 Vaccine', '2025-02-12', NULL),
+(43, 'RAFAY', 'Hepatitis B Vaccine', '2025-05-05', NULL),
+(44, 'Sarah Johnson', 'HPV Vaccine', '2024-03-10', 11),
+(45, 'David Wilson', 'Tetanus Booster', '2024-03-11', 11),
+(46, 'Emma Davis', 'COVID-19 Booster', '2024-03-12', 8);
+
+CREATE TABLE vaccines (
+  vaccine_id int(11) NOT NULL,
+  vaccine_name varchar(255) NOT NULL,
+  vaccine_type varchar(100) DEFAULT NULL,
+  stock_count int(11) DEFAULT 0,
+  hospital_id int(11) DEFAULT NULL,
+  created_at timestamp NOT NULL DEFAULT current_timestamp(),
+  updated_at timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  quantity int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO vaccines (vaccine_id, vaccine_name, vaccine_type, stock_count, hospital_id, created_at, updated_at, quantity) VALUES
+(1, 'COVID-19 Vaccine', NULL, 0, NULL, '2024-12-20 11:13:22', '2025-01-29 02:36:47', 95),
+(2, 'Flu Vaccine', NULL, 0, NULL, '2024-12-20 11:13:22', '2024-12-20 11:13:22', 150),
+(3, 'Hepatitis B Vaccine', NULL, 0, NULL, '2024-12-20 11:13:22', '2025-01-29 02:37:08', 74),
+(4, 'COVID-19 Booster', 'mRNA', 500, 8, '2025-02-20 09:17:46', '2025-02-20 09:17:46', 500),
+(5, 'Pediatric Flu', 'Inactivated', 300, 8, '2025-02-20 09:17:46', '2025-02-20 09:17:46', 300),
+(6, 'HPV Vaccine', 'Subunit', 200, 11, '2025-02-20 09:17:46', '2025-02-20 09:17:46', 200),
+(7, 'Tetanus Booster', 'Toxoid', 150, 11, '2025-02-20 09:17:46', '2025-02-20 09:17:46', 150),
+(8, 'COVID-19 Booster', NULL, 200, 12, '2025-02-20 09:48:44', '2025-02-20 09:48:44', 0),
+(9, 'Flu Vaccine', NULL, 150, 12, '2025-02-20 09:48:44', '2025-02-20 09:48:44', 0);
+
+CREATE TABLE vaccine_requests (
+  id int(11) NOT NULL,
+  requester_name varchar(255) NOT NULL,
+  vaccine_name varchar(255) NOT NULL,
+  quantity int(11) NOT NULL,
+  request_date date NOT NULL,
+  status enum('Pending','Approved','Rejected') DEFAULT 'Pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO vaccine_requests (id, requester_name, vaccine_name, quantity, request_date, status) VALUES
+(1, 'DOW', 'Hepatitis B Vaccine', 35, '2024-05-01', 'Approved'),
+(2, 'City Hospital', 'HPV Vaccine', 100, '2024-03-01', 'Approved'),
+(3, 'General Hospital', 'Tetanus Booster', 50, '2024-03-05', 'Pending');
+
+
+ALTER TABLE beds
+  ADD PRIMARY KEY (bed_id),
+  ADD KEY hospital_id (hospital_id);
+
+ALTER TABLE hospitals
+  ADD PRIMARY KEY (hospital_id),
+  ADD UNIQUE KEY email (email),
+  ADD KEY admin_id (user_id);
+
+ALTER TABLE invoices
+  ADD PRIMARY KEY (id);
+
+ALTER TABLE notifications
+  ADD PRIMARY KEY (notification_id),
+  ADD KEY user_id (user_id);
+
+ALTER TABLE reports
+  ADD PRIMARY KEY (report_id);
+
+ALTER TABLE requests
+  ADD PRIMARY KEY (request_id),
+  ADD KEY user_id (user_id),
+  ADD KEY hospital_id (hospital_id),
+  ADD KEY vaccine_id (vaccine_id),
+  ADD KEY bed_id (bed_id);
+
+ALTER TABLE testimonials
+  ADD PRIMARY KEY (id);
+
+ALTER TABLE users
+  ADD PRIMARY KEY (user_id),
+  ADD UNIQUE KEY username (username),
+  ADD UNIQUE KEY email (email);
+
+ALTER TABLE vaccination_records
+  ADD PRIMARY KEY (id);
+
+ALTER TABLE vaccines
+  ADD PRIMARY KEY (vaccine_id),
+  ADD KEY hospital_id (hospital_id);
+
+ALTER TABLE vaccine_requests
+  ADD PRIMARY KEY (id);
+
+
+ALTER TABLE beds
+  MODIFY bed_id int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE hospitals
+  MODIFY hospital_id int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE invoices
+  MODIFY id int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE notifications
+  MODIFY notification_id int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE reports
+  MODIFY report_id int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE requests
+  MODIFY request_id int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE testimonials
+  MODIFY id int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE users
+  MODIFY user_id int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE vaccination_records
+  MODIFY id int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE vaccines
+  MODIFY vaccine_id int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE vaccine_requests
+  MODIFY id int(11) NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE beds
+  ADD CONSTRAINT beds_ibfk_1 FOREIGN KEY (hospital_id) REFERENCES hospitals (hospital_id);
+
+ALTER TABLE hospitals
+  ADD CONSTRAINT hospitals_ibfk_1 FOREIGN KEY (user_id) REFERENCES `users` (user_id);
+
+ALTER TABLE notifications
+  ADD CONSTRAINT notifications_ibfk_1 FOREIGN KEY (user_id) REFERENCES `users` (user_id);
+
+ALTER TABLE requests
+  ADD CONSTRAINT requests_ibfk_1 FOREIGN KEY (user_id) REFERENCES `users` (user_id),
+  ADD CONSTRAINT requests_ibfk_2 FOREIGN KEY (hospital_id) REFERENCES hospitals (hospital_id),
+  ADD CONSTRAINT requests_ibfk_3 FOREIGN KEY (vaccine_id) REFERENCES vaccines (vaccine_id),
+  ADD CONSTRAINT requests_ibfk_4 FOREIGN KEY (bed_id) REFERENCES beds (bed_id);
+
+ALTER TABLE vaccines
+  ADD CONSTRAINT vaccines_ibfk_1 FOREIGN KEY (hospital_id) REFERENCES hospitals (hospital_id);
