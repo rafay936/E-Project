@@ -1,0 +1,844 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #fff;
+  --purple-light: #6855e7b5;
+  --purple-dark: #6558be;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* ======= New Scheduling Styles ======= */
+.schedule {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.schedule h1 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.schedule label {
+  display: block;
+  margin: 15px 0 5px;
+  font-weight: bold;
+}
+.schedule select, 
+.schedule input[type="text"], 
+.schedule button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.schedule button {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.schedule button:hover {
+  background: #45a049;
+  transform: scale(1.03);
+}
+
+.appointments {
+  width: 90%;
+  margin: 30px auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+}
+.appointments h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.appointments table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.appointments table th,
+.appointments table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+.appointments table th {
+  background: #4CAF50;
+  color: #fff;
+}
+.appointments table tr:hover {
+  background: #f9f9f9;
+}
+
+.notification {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #dff0d8;
+  color: #3c763d;
+  padding: 15px 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 9999;
+}
+
+/* ======= Original Styles Below (Unmodified) ======= */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--purple-light);
+  color: #fff;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--purple-dark);
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  transition: 0.3s;
+  position: relative;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background-color: var(--purple-light);
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4rem 2rem;
+  background-color: white;
+  gap: 2rem;
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 600px;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  color: var(--purple-dark);
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.cta-button {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  background-color: var(--purple-dark);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+  background-color: #483d8b;
+}
+
+.hero-image {
+  flex: 1;
+  max-width: 500px;
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column-reverse;
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .hero-image {
+    max-width: 100%;
+  }
+}
+
+.features {
+  padding: 4rem 2rem;
+  text-align: center;
+  background-color: #f8f9fa;
+}
+
+.features h2 {
+  color: var(--purple-dark);
+  margin-bottom: 3rem;
+  font-size: 2rem;
+}
+
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  padding: 2rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-card img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  color: var(--purple-dark);
+  margin-bottom: 1rem;
+}
+
+.vaccination-info {
+  padding: 4rem 2rem;
+  background-color: white;
+}
+
+.info-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.info-content h2 {
+  color: var(--purple-dark);
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.benefits-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.benefits-list li {
+  padding: 1rem;
+  background-color: var(--purple-light);
+  border-radius: 5px;
+  color: var(--primary-color);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--purple-dark);
+  color: white;
+  border-radius: 10px;
+}
+
+.stat-card h3 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.immunization-tips {
+  padding: 4rem 2rem;
+  background-color: white;
+}
+
+.tips-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+.tips-image {
+  flex: 1;
+}
+
+.tips-image img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.tips-content {
+  flex: 1;
+}
+
+.tips-content h2 {
+  color: var(--purple-dark);
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.tip-card {
+  background-color: var(--purple-light);
+  padding: 1.5rem;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.tip-card:hover {
+  transform: translateY(-5px);
+}
+
+.tip-card h3 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.tip-card p {
+  color: var(--primary-color);
+  line-height: 1.4;
+}
+
+@media (max-width: 968px) {
+  .tips-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .tips-image img {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 568px) {
+  .tips-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .immunization-tips {
+    padding: 2rem 1rem;
+  }
+}
+
+.testimonials {
+  padding: 4rem 2rem;
+  background-color: #f8f9fa;
+  text-align: center;
+}
+
+.testimonials h2 {
+  color: var(--purple-dark);
+  margin-bottom: 3rem;
+  font-size: 2rem;
+}
+
+.testimonial-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+}
+
+.testimonial-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.testimonial-text {
+  color: #666;
+  font-style: italic;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.testimonial-card h4 {
+  color: var(--purple-dark);
+  margin-bottom: 0.5rem;
+}
+
+.testimonial-role {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.faq-section {
+  padding: 4rem 2rem;
+  background-color: #f8f9fa;
+}
+
+.faq-section h2 {
+  text-align: center;
+  color: var(--purple-dark);
+  margin-bottom: 3rem;
+  font-size: 2rem;
+}
+
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.faq-question {
+  padding: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-question h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--purple-dark);
+}
+
+.toggle-icon {
+  font-size: 1.5rem;
+  color: var(--purple-dark);
+}
+
+.faq-answer {
+  padding: 0 1.5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.faq-item.active .faq-answer {
+  padding: 0 1.5rem 1.5rem;
+  max-height: 200px;
+}
+
+.faq-item.active .toggle-icon {
+  transform: rotate(45deg);
+}
+
+@media (max-width: 768px) {
+  .faq-section {
+    padding: 2rem 1rem;
+  }
+
+  .faq-question h3 {
+    font-size: 1rem;
+  }
+}
+
+.footer {
+  background: var(--purple-light);
+  color: white;
+  padding: 4rem 2rem 1rem;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-content .logo-section {
+  flex: 0 0 250px;
+}
+
+.footer-content .footer-links {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-section h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section ul li,
+.footer-section p {
+  margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+  color: #333333;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section a:hover {
+  color: var(--purple-light);
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid #555;
+}
+
+.logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.footer-logo {
+  width: 100px;
+  height: auto;
+}
+
+.footer-section ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+}
+
+/* Contact Page Styles */
+.contact-hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: var(--purple-light);
+}
+
+.contact-hero h1 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+}
+
+.contact-hero p {
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.contact-info-section {
+  padding: 4rem 2rem;
+  background-color: white;
+}
+
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contact-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.contact-card {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+}
+
+.contact-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.contact-card h3 {
+  color: var(--purple-dark);
+  margin-bottom: 1rem;
+}
+
+.contact-card p {
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.contact-form-section {
+  padding: 4rem 2rem;
+  background-color: #f8f9fa;
+}
+
+.form-and-map {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.contact-form {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form h2 {
+  color: var(--purple-dark);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.form-group textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--purple-dark);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #483d8b;
+}
+
+.map-container {
+  border-radius: 10px;
+  overflow: hidden;
+  height: 100%;
+}
+
+@media (max-width: 968px) {
+  .form-and-map {
+    grid-template-columns: 1fr;
+  }
+
+  .map-container {
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-hero {
+    padding: 2rem 1rem;
+  }
+
+  .contact-hero h1 {
+    font-size: 2rem;
+  }
+
+  .contact-info-section,
+  .contact-form-section {
+    padding: 2rem 1rem;
+  }
+
+  .features {
+    padding: 2rem 1rem;
+  }
+
+  .feature-cards {
+    gap: 1rem;
+  }
+
+  .vaccination-info {
+    padding: 2rem 1rem;
+  }
+
+  .benefits-list {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    gap: 1rem;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-content .logo-section {
+    flex: 1;
+    align-items: center;
+  }
+
+  .footer-content .footer-links {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .footer-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-section ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+
+  .contact-info {
+    text-align: center;
+  }
+}
